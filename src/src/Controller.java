@@ -33,9 +33,10 @@ public class Controller {
     private static Map<String, String> userTokens = new HashMap<>();
     private static Map<String, Long> tokenTimestamps = new HashMap<>();
     private static Map<String, String> userMfaCodes = new HashMap<>();
-    private static final String SMTP_SERVER = "in-v3.mailjet.com";
-    private static final String SMTP_USERNAME = "c12dfb092de6da6de42d3f5c3a271690";
-    private static final String SMTP_PASSWORD = "e9f16adaa3d6bb2db48b33ed484684fa";
+    private static final String SMTP_SERVER = "smtp.gmail.com";
+    private static final String SMTP_PORT = "587"; 
+    private static final String SMTP_USERNAME = "ezazahmadshanto@gmail.com";
+    private static final String SMTP_PASSWORD = "txuk hhdm lnrm qjvv";
 
     public static void initializeServer() {
         // This method will be empty but whenver this method will be called , it will immediatly  trigger the static block to run
@@ -178,9 +179,9 @@ public class Controller {
     private static void sendEmail(String to, String subject, String content) {
         Properties props = new Properties();
         props.put("mail.smtp.host", SMTP_SERVER);
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.port", SMTP_PORT);
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.enable", "true"); // For TLS
 
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
@@ -191,16 +192,16 @@ public class Controller {
 
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("ezazahmedshanto@gmail.com"));
+            message.setFrom(new InternetAddress(SMTP_USERNAME));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             message.setSubject(subject);
             message.setText(content);
 
             Transport.send(message);
+            System.out.println("Email sent successfully!");
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
-
     }
     private static SecurityLevel stringToSecurityLevel(String level) {
         switch(level) {
